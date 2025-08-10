@@ -55,7 +55,7 @@ SELECT ST_IsValid(geom) FROM polygons_wld;
 -- Delete invalid geometries
 DELETE FROM polygons_wld
 WHERE ST_IsValid(geom) = false;
-
+``` 
 ## 🔍 Data Analysis Workflow
 Large queries were split into smaller intermediate tables for performance:
 Temperature statistics
@@ -65,6 +65,8 @@ Sunshine & climate values
 Pedology rankings
 Geology rankings
 
+### 1️⃣ Temperature Aggregation
+``` sql
 CREATE TABLE temperature AS
 SELECT za.id, za.nom AS name,
        AVG(temp_min.dn) AS min_temperature,
@@ -76,4 +78,5 @@ LEFT JOIN temp_minimales temp_min ON ST_Within(za.geom, temp_min.geom)
 LEFT JOIN temp_moyennes temp_moy ON ST_Within(za.geom, temp_moy.geom)
 LEFT JOIN temp_maximales temp_max ON ST_Within(za.geom, temp_max.geom)
 GROUP BY za.id, za.nom, za.geom;
+```
 
